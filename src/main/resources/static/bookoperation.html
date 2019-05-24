@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>主页面</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		html {
+			height: 100%;
+		}
+
+		body {
+			height: 100%;
+			background: #fff url(images/backgroud.png) 50% 50% no-repeat;
+			background-size: cover;
+		}
+
+		.form-item {
+			position: relative;
+			width: 360px;
+			margin: 0 auto;
+			padding-bottom: 30px;
+		}
+
+		.form-item input {
+			width: 288px;
+			height: 48px;
+			padding-left: 70px;
+			border: 2px solid #fff;
+			border-radius: 25px;
+			font-size: 18px;
+			color: #fff;
+			background-color: transparent;
+			outline: none;
+		}
+
+		.form-item button {
+			width: 360px;
+			height: 50px;
+			border: 0;
+			border-radius: 25px;
+			font-size: 18px;
+			color: #000000;
+			outline: none;
+			cursor: pointer;
+			background-color: #21ae78;
+		}
+
+		table {
+			width: 100%;
+			padding: 10px;
+			border: 2px solid #fff;
+			border-radius: 25px;
+			font-size: 18px;
+			text-align: center;
+			background-color: transparent;
+		}
+	</style>
+	<script src="images/jquery.min.js"></script>
+	<script type="text/javascript">
+        function getBookInfo() {
+            $.ajax({
+                            url: "/getBookInfo",
+                            type: "post",
+                            success: function (data) {
+                                var books = JSON.parse(data);
+                                $("#books").empty();
+                                $("#books").append(
+                                    "<tr><td>书号</td>" +
+                                    "<td>书名</td>" +
+                                    "<td>书类</td>" +
+                                    "<td>出版社</td>" +
+                                    "<td>作者</td></tr>")
+                                for (var i = 0; i < books.length; i++) {
+                                    $("#books").append(
+                                        "<tr><td>" + books[i].bookId + "</td>" +
+                                        "<td>" + books[i].bookName + "</td>" +
+                                        "<td>" + books[i].bookType + "</td>" +
+                                        "<td>" + books[i].press + "</td>" +
+                                        "<td>" + books[i].writer + "</td></tr>")
+                    }
+                }
+            })
+        }
+
+        function getBookMenuInfo() {
+            $.ajax({
+                url: "/getBookMenuInfo",
+                type: "post",
+                success: function (data) {
+                    var bookMenus = JSON.parse(data);
+                    $("#books").empty();
+                    $("#books").append(
+                        "<tr><td>用户名</td>" +
+                        "<td>真实姓名</td>" +
+                        "<td>书名</td>" +
+                        "<td>出版社</td>" +
+                        "<td>状态</td>" +
+                        "<td>日期</td></tr>")
+                    for (var i = 0; i < bookMenus.length; i++) {
+                        $("#books").append(
+                            "<tr><td>" + bookMenus[i].userName + "</td>" +
+                            "<td>" + bookMenus[i].name + "</td>" +
+                            "<td>" + bookMenus[i].bookName + "</td>" +
+                            "<td>" + bookMenus[i].press + "</td>" +
+                            "<td>" + bookMenus[i].status + "</td>" +
+                            "<td>" + bookMenus[i].date + "</td></tr>")
+                    }
+                }
+            })
+        }
+
+        function getSomeBookInfo() {
+            var condition = $("#condition").val();
+            $.ajax({
+                url: "/getSomeBookInfo",
+                type: "post",
+                data: JSON.stringify(condition),
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    var books = JSON.parse(data);
+                    $("#books").empty();
+                    $("#books").append(
+                        "<tr><td>书号</td>" +
+                        "<td>书名</td>" +
+                        "<td>书类</td>" +
+                        "<td>出版社</td>" +
+                        "<td>作者</td></tr>")
+                    for (var i = 0; i < books.length; i++) {
+                        $("#books").append(
+                            "<tr><td>" + books[i].bookId + "</td>" +
+                            "<td>" + books[i].bookName + "</td>" +
+                            "<td>" + books[i].bookType + "</td>" +
+                            "<td>" + books[i].press + "</td>" +
+                            "<td>" + books[i].writer + "</td></tr>")
+                    }
+                }
+            })
+        }
+
+        function updateStatus() {
+            $.ajax({
+                url: "/updateStatus",
+                type: "post",
+                data: JSON.stringify($("#bookId").val()),
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                }
+            })
+        }
+
+        function updateStatus2() {
+            $.ajax({
+                url: "/updateStatus2",
+                type: "post",
+                data: JSON.stringify($("#bookId").val()),
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                }
+            })
+        }
+
+        function setBookInfo() {
+            var data = {
+                bookName: $("#bookname1").val(),
+                bookType: $("#booktype").val(),
+                press: $("#press").val(),
+                writer: $("#writer").val()
+            };
+            $.ajax({
+                url: "/setBookInfo",
+                type: "post",
+                data: JSON.stringify(data),
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                }
+            })
+        }
+
+        function setBook() {
+            $("#books").empty();
+            $("#books").append(
+                "<tr><td>书号</td>" +
+                "<td>书名</td>" +
+                "<td>书类</td>" +
+                "<td>出版社</td>" +
+                "<td>作者</td></tr>")
+            $("#books").append(
+                "<tr><td>~</td>" +
+                "<td><input id='bookname1' name='bookname' type='text' placeholder='书名'></td>" +
+                "<td><input id='booktype' name='booktype' type='text' placeholder='书类'></td>" +
+                "<td><input id='press' name='press' type='text' placeholder='出版社'></td>" +
+                "<td><input id='writer' name='writer' type='text' placeholder='作者'></td>" +
+                "<td><button type='button' onclick='setBookInfo()'>添加</button></td></tr>")
+        }
+	</script>
+</head>
+<body>
+<h1 style="text-align: center;color: #21ae78;padding: 30px">管理员图书借阅系统</h1>
+<div style="position: absolute;width: 20%">
+	<div class="form-item">
+		<button type="button" onclick="getBookInfo()">显示所有图书</button>
+	</div>
+	<div class="form-item">
+		<button type="button" onclick="setBook()">添加新图书</button>
+	</div>
+	<div class="form-item">
+		<button type="button" onclick="getBookMenuInfo()">图书借阅情况</button>
+	</div>
+	<div class="form-item">
+		<input id="bookId" name="bookId" type="text" placeholder="书号" required="required">
+		<button type="button" onclick="updateStatus2()" style="width: 180px;float: left">借出</button><br>
+		<button type="button" onclick="updateStatus()" style="width: 180px">归还</button>
+	</div>
+	<div class="form-item">
+		<input id="condition" name="condition" type="text" placeholder="图书种类" required="required"
+			   style="position: absolute;padding-left: 100px;width: 260px">
+		<button type="button" onclick="getSomeBookInfo()" style="position: absolute;width: 20%">搜索</button>
+	</div>
+	<img src="images/book.jpg" style="position: relative;width: 360px;height: auto;padding: 10px;padding-top: 100px">
+</div>
+<div style="position: absolute;left: 25%;width: 70%">
+	<table id="books">
+		<tr>
+			<td>搜索结果
+			<td>
+		</tr>
+	</table>
+</div>
+
+</body>
+</html>
